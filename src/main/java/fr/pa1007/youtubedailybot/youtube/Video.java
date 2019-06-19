@@ -26,16 +26,19 @@ public class Video {
 
     private final String videoID;
 
+    private final String chanID;
+
     private String viewNb;
 
     private boolean researchDone;
     private String  dislike;
     private String  like;
 
-    public Video(String viID, String user, String title) {
+    public Video(String viID, String user, String title, String chanID) {
         this.videoID = viID;
         this.user = user;
         this.title = title;
+        this.chanID = chanID;
         try {
             makeResearch();
             researchDone = true;
@@ -43,6 +46,17 @@ public class Video {
         catch (KeyException | IOException e) {
             researchDone = false;
         }
+    }
+
+    public Video(String viID, String user, String title, String chanID, String viewNb, String dislike, String like) {
+        this.videoID = viID;
+        this.title = title;
+        this.user = user;
+        this.chanID = chanID;
+        this.viewNb = viewNb;
+        this.dislike = dislike;
+        this.like = like;
+        researchDone = true;
     }
 
     public String getName() {
@@ -100,6 +114,10 @@ public class Video {
             }
             return viewNb;
         }
+    }
+
+    public String getChanID() {
+        return chanID;
     }
 
     private void makeResearch() throws KeyException, IOException {

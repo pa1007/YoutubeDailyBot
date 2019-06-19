@@ -10,10 +10,11 @@ public class Finder {
     }
 
     public static Video getVideo(Result result) {
-        Item   item  = result.getItems().get(0);
-        String viID  = item.getId().getVideoId();
-        String title = item.getSnippet().getTitle();
-        String user  = item.getSnippet().getChannelTitle();
-        return new Video(viID, user, title);
+        Item   item   = result.getItems().get(0);
+        String chanID = item.getSnippet().getChannelId();
+        String viID   = item.getId().getVideoId();
+        String title  = item.getSnippet().getTitle();
+        String user   = item.getSnippet().getChannelTitle();
+        return new Video(viID, user, title, chanID);
     }
 }

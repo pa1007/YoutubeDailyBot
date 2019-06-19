@@ -1,0 +1,12 @@
+"FIRST LINE : AVGVIEWS":
+This past month,
+{VIDEO_CHANNEL_FIRST}
+had
+{VIDEO_NUMBER}
+videos most viewed the day they has been released with an average of
+{AVERAGE_VIEW}
+views by videos or
+{TOTAL_VIEW}
+total views around all
+{VIDEO_NUMBER}
+videos

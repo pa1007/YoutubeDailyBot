@@ -31,15 +31,19 @@ public class Mail {
 
     }
 
-    private static String createString(Exception e) {
-        String r = Date.from(Instant.now()) + " ;"
-                   +
-                   "Dear pa1007, My creator, i'm here because of the Application Daily Youtube video, something went wrong and you will have the exception; \n"
-                   + "Please remind that if the exception is an InterruptedException you will need to restart it manually, it might be important to look after each exception \n"
-                   + "I think you can find the error my friend, please do something quick ! \n\n\n"
-                   + ""
-                   + "Best regard pa1007\n\n\n";
-        r += e.getMessage();
-        return r;
+    public static String createString(Exception e) {
+        StringBuilder r = new StringBuilder(Date.from(Instant.now()) + " ;"
+                                            +
+                                            "Dear pa1007, My creator, i'm here because of the Application Daily Youtube video, something went wrong and you will have the exception; \n"
+                                            + "Please remind that if the exception is an InterruptedException you will need to restart it manually, it might be important to look after each exception \n"
+                                            + "I think you can find the error my friend, please do something quick ! \n\n\n"
+                                            + ""
+                                            + "Best regard pa1007\n\n\n");
+        r.append(e.getLocalizedMessage()).append("\n");
+        r.append(e.getClass()).append("\n");
+        for (StackTraceElement st : e.getStackTrace()) {
+            r.append(st).append("\n");
+        }
+        return r.toString();
     }
 }

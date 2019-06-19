@@ -20,15 +20,15 @@ public class Stats {
         chanName = f.getCreator();
         chanID = f.getChanID();
         number = 1;
-        cumulatedViews = Long.parseLong(f.getViews());
-        cumulatedLikes = Long.parseLong(f.getLikes());
+        cumulatedViews = f.getTruelikes();
+        cumulatedLikes = f.getTruelikes();
 
     }
 
     public void add(Video f) {
         number++;
-        cumulatedViews += Long.parseLong(f.getViews());
-        cumulatedLikes += Long.parseLong(f.getLikes());
+        cumulatedViews += f.getTruelikes();
+        cumulatedLikes += f.getTruelikes();
     }
 
     public long getAvgViews() {

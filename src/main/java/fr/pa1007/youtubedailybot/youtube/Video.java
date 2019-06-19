@@ -26,13 +26,13 @@ public class Video {
 
     private final String videoID;
 
-    private final String chanID;
-
-    private String viewNb;
-
-    private boolean researchDone;
-    private String  dislike;
-    private String  like;
+    private final String  chanID;
+    private       String  viewNb;
+    private       long    views;
+    private       long    likes;
+    private       boolean researchDone;
+    private       String  dislike;
+    private       String  like;
 
     public Video(String viID, String user, String title, String chanID) {
         this.videoID = viID;
@@ -57,6 +57,14 @@ public class Video {
         this.dislike = dislike;
         this.like = like;
         researchDone = true;
+    }
+
+    public long getTrueViews() {
+        return views;
+    }
+
+    public long getTruelikes() {
+        return likes;
     }
 
     public String getName() {
@@ -129,8 +137,10 @@ public class Video {
             videoAPI = GSON.fromJson(data, clazzListType);
         }
         Statistics vid = videoAPI.getItems().get(0).getStatistics();
-        viewNb = prettyNumber(Integer.parseInt(vid.getViewCount()));
-        like = prettyNumber(Integer.parseInt(vid.getLikeCount()));
+        views = Long.parseLong(vid.getViewCount());
+        viewNb = prettyNumber(Math.toIntExact(views));
+        likes = Long.parseLong(vid.getLikeCount());
+        like = prettyNumber(Math.toIntExact(likes));
         dislike = prettyNumber(Integer.parseInt(vid.getDislikeCount()));
     }
 

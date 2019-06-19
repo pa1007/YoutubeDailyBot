@@ -1,0 +1,8 @@
+{VIDEO_CHANNEL}
+has uploaded yesterday's most viewed video
+{VIDEO_NAME}
+with
+{VIDEO_VIEWS}
+views at the link below
+{NEXT_LINE}
+{VIDEO_LINK}

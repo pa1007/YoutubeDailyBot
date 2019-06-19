@@ -10,13 +10,14 @@ import twitter4j.TwitterFactory;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.security.KeyException;
 
 public class Twitter {
 
     private Twitter() {
     }
 
-    public static String makeTweet(Video video) throws IOException {
+    public static String makeTweet(Video video) throws IOException, KeyException {
         String         line;
         StringBuilder  result = new StringBuilder();
         BufferedReader br     = new BufferedReader(new FileReader("tweet.txt"));
@@ -48,7 +49,7 @@ public class Twitter {
         return result.toString();
     }
 
-    private static String interpretLine(String line, Video video) {
+    private static String interpretLine(String line, Video video) throws KeyException, IOException {
         if (line.startsWith("{")) {
             String result;
             switch (StringMessage.getInstance(line)) {

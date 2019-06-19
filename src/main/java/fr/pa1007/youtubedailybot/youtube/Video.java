@@ -79,47 +79,32 @@ public class Video {
         return "https://www.youtube.com/watch?v=" + videoID;
     }
 
-    public String getLikes() {
+    public String getLikes() throws KeyException, IOException {
         if (researchDone) {
             return like;
         }
         else {
-            try {
-                makeResearch();
-            }
-            catch (KeyException | IOException e) {
-                return "ERROR";
-            }
+            makeResearch();
             return like;
         }
     }
 
-    public String getDislike() {
+    public String getDislike() throws KeyException, IOException {
         if (researchDone) {
             return dislike;
         }
         else {
-            try {
-                makeResearch();
-            }
-            catch (KeyException | IOException e) {
-                return "ERROR";
-            }
+            makeResearch();
             return dislike;
         }
     }
 
-    public String getViews() {
+    public String getViews() throws KeyException, IOException {
         if (researchDone) {
             return viewNb;
         }
         else {
-            try {
-                makeResearch();
-            }
-            catch (KeyException | IOException e) {
-                return "ERROR";
-            }
+            makeResearch();
             return viewNb;
         }
     }

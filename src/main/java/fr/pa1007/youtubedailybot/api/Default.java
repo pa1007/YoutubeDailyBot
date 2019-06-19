@@ -1,6 +1,7 @@
 
-package fr.pa1007.yourubedailybot.api;
+package fr.pa1007.youtubedailybot.api;
 
+import com.google.common.base.Objects;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +11,7 @@ public class Default {
     private Integer width;
     private Integer height;
 
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     public String getUrl() {
         return url;
@@ -44,4 +45,14 @@ public class Default {
         this.additionalProperties.put(name, value);
     }
 
+
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this)
+                .add("url", url)
+                .add("width", width)
+                .add("height", height)
+                .add("additionalProperties", additionalProperties)
+                .toString();
+    }
 }

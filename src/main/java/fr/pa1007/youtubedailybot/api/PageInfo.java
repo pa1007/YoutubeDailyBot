@@ -1,6 +1,7 @@
 
-package fr.pa1007.yourubedailybot.api;
+package fr.pa1007.youtubedailybot.api;
 
+import com.google.common.base.Objects;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,7 +9,7 @@ public class PageInfo {
 
     private Integer             totalResults;
     private Integer             resultsPerPage;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     public Integer getTotalResults() {
         return totalResults;
@@ -34,4 +35,12 @@ public class PageInfo {
         this.additionalProperties.put(name, value);
     }
 
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this)
+                .add("totalResults", totalResults)
+                .add("resultsPerPage", resultsPerPage)
+                .add("additionalProperties", additionalProperties)
+                .toString();
+    }
 }

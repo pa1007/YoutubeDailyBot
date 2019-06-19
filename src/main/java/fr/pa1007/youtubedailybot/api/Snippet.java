@@ -1,6 +1,7 @@
 
-package fr.pa1007.yourubedailybot.api;
+package fr.pa1007.youtubedailybot.api;
 
+import com.google.common.base.Objects;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +14,7 @@ public class Snippet {
     private Thumbnails          thumbnails;
     private String              channelTitle;
     private String              liveBroadcastContent;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     public String getPublishedAt() {
         return publishedAt;
@@ -79,4 +80,17 @@ public class Snippet {
         this.additionalProperties.put(name, value);
     }
 
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this)
+                .add("publishedAt", publishedAt)
+                .add("channelId", channelId)
+                .add("title", title)
+                .add("description", description)
+                .add("thumbnails", thumbnails)
+                .add("channelTitle", channelTitle)
+                .add("liveBroadcastContent", liveBroadcastContent)
+                .add("additionalProperties", additionalProperties)
+                .toString();
+    }
 }

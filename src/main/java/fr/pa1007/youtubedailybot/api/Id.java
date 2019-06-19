@@ -1,6 +1,7 @@
 
-package fr.pa1007.yourubedailybot.api;
+package fr.pa1007.youtubedailybot.api;
 
+import com.google.common.base.Objects;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,7 +9,7 @@ public class Id {
 
     private String              kind;
     private String              videoId;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     public String getKind() {
         return kind;
@@ -34,5 +35,12 @@ public class Id {
         this.additionalProperties.put(name, value);
     }
 
-
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this)
+                .add("kind", kind)
+                .add("videoId", videoId)
+                .add("additionalProperties", additionalProperties)
+                .toString();
+    }
 }

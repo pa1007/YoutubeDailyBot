@@ -1,6 +1,7 @@
 
-package fr.pa1007.yourubedailybot.api;
+package fr.pa1007.youtubedailybot.api;
 
+import com.google.common.base.Objects;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,4 +73,16 @@ public class Result {
         this.additionalProperties.put(name, value);
     }
 
+    @Override
+    public String toString() {
+        return Objects.toStringHelper(this)
+                .add("kind", kind)
+                .add("etag", etag)
+                .add("nextPageToken", nextPageToken)
+                .add("regionCode", regionCode)
+                .add("pageInfo", pageInfo)
+                .add("items", items)
+                .add("additionalProperties", additionalProperties)
+                .toString();
+    }
 }

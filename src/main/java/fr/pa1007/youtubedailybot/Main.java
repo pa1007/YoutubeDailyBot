@@ -6,6 +6,7 @@ import fr.pa1007.youtubedailybot.statistics.Statistics;
 import fr.pa1007.youtubedailybot.twitter.Twitter;
 import fr.pa1007.youtubedailybot.youtube.Finder;
 import fr.pa1007.youtubedailybot.youtube.Video;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
@@ -15,8 +16,15 @@ public class Main {
 
 
     public static void main(String[] args) {
-        Statistics s     = new Statistics();
         boolean    canDo = false;
+        Statistics s     = null;
+        try {
+            s = new Statistics();
+        }
+        catch (SQLException | ClassNotFoundException e) {
+            Mail.send(e);
+            canDo = true;
+        }
         while (true) {
             if (!canDo) {
                 try {

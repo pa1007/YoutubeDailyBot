@@ -15,20 +15,46 @@ public class Stats {
 
     private long cumulatedLikes;
 
+    private long cumulatedDisLikes;
+
+    private long cumulatedComm;
+
 
     public Stats(Video f) {
         chanName = f.getCreator();
         chanID = f.getChanID();
         number = 1;
-        cumulatedViews = f.getTruelikes();
+        cumulatedViews = f.getTrueViews();
         cumulatedLikes = f.getTruelikes();
+        cumulatedComm = f.getTrueComm();
+        cumulatedDisLikes = f.getTrueDislikes();
 
+    }
+
+    public Stats(
+            String chanName,
+            String chanID,
+            long cumulatedViews,
+            long number,
+            long cumulatedLikes,
+            long cumulatedDisLikes,
+            long cumulatedComm
+    ) {
+        this.chanName = chanName;
+        this.chanID = chanID;
+        this.cumulatedViews = cumulatedViews;
+        this.number = number;
+        this.cumulatedLikes = cumulatedLikes;
+        this.cumulatedDisLikes = cumulatedDisLikes;
+        this.cumulatedComm = cumulatedComm;
     }
 
     public void add(Video f) {
         number++;
-        cumulatedViews += f.getTruelikes();
+        cumulatedViews += f.getTrueViews();
         cumulatedLikes += f.getTruelikes();
+        cumulatedComm += f.getTrueComm();
+        cumulatedDisLikes += f.getTrueDislikes();
     }
 
     public long getAvgViews() {
@@ -57,6 +83,14 @@ public class Stats {
 
     public long getCumulatedLikes() {
         return cumulatedLikes;
+    }
+
+    public long getCumulatedComms() {
+        return cumulatedComm;
+    }
+
+    public long getCumulatedDisLikes() {
+        return cumulatedDisLikes;
     }
 
     @Override

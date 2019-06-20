@@ -26,13 +26,18 @@ public class Video {
 
     private final String videoID;
 
-    private final String  chanID;
-    private       String  viewNb;
-    private       long    views;
-    private       long    likes;
-    private       boolean researchDone;
-    private       String  dislike;
-    private       String  like;
+    private final String chanID;
+    private       String viewNb;
+
+    private long views;
+    private long likes;
+    private long dislikes;
+    private long comms;
+
+    private boolean researchDone;
+    private String  dislike;
+    private String  comm;
+    private String  like;
 
     public Video(String viID, String user, String title, String chanID) {
         this.videoID = viID;
@@ -113,6 +118,14 @@ public class Video {
         return chanID;
     }
 
+    public long getTrueComm() {
+        return comms;
+    }
+
+    public long getTrueDislikes() {
+        return dislikes;
+    }
+
     private void makeResearch() throws KeyException, IOException {
         String url =
                 "https://www.googleapis.com/youtube/v3/videos?part=statistics&id=" + videoID + "&key=" + API.getKey();
@@ -126,7 +139,10 @@ public class Video {
         viewNb = prettyNumber(Math.toIntExact(views));
         likes = Long.parseLong(vid.getLikeCount());
         like = prettyNumber(Math.toIntExact(likes));
-        dislike = prettyNumber(Integer.parseInt(vid.getDislikeCount()));
+        dislikes = Long.parseLong(vid.getDislikeCount());
+        dislike = prettyNumber(Math.toIntExact(dislikes));
+        comms = Long.parseLong(vid.getCommentCount());
+        comm = prettyNumber(Math.toIntExact(comms));
     }
 
     public static String prettyNumber(int num) {

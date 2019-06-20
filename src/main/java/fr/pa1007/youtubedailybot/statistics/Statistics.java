@@ -1,7 +1,9 @@
 package fr.pa1007.youtubedailybot.statistics;
 
 import com.google.common.base.Objects;
+import fr.pa1007.youtubedailybot.bdd.MYSQLConnection;
 import fr.pa1007.youtubedailybot.youtube.Video;
+import java.sql.SQLException;
 import java.text.DateFormatSymbols;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -11,13 +13,15 @@ public final class Statistics {
 
     private Map<String, Stats>              map;
     private Map<String, Map<String, Stats>> monthMap;
+    private MYSQLConnection                 mysqlConnection;
 
-    public Statistics() {
+    public Statistics() throws SQLException, ClassNotFoundException {
         map = new HashMap<>();
-        monthMap = new HashMap<>();
+        mysqlConnection = new MYSQLConnection();
+        init(mysqlConnection.getAllInfos());
     }
 
-    public void addNew(Video f) {
+    public void addNew(Video f) throws SQLException, ClassNotFoundException {
         Stats s = test(f.getChanID());
         if (s == null) {
             map.put(f.getChanID(), new Stats(f));
@@ -25,6 +29,7 @@ public final class Statistics {
         else {
             s.add(f);
         }
+        mysqlConnection.addStat(s);
     }
 
 
@@ -120,9 +125,6 @@ public final class Statistics {
             case "FIRST LINE : TOTVIEWS":
                 s = getFirstThisMonthViews();
                 break;
-            case "FIRST LINE : NUMBER":
-                s = getFirstThisMonthNumber();
-                break;
             default:
                 s = getFirstThisMonthNumber();
                 break;
@@ -134,6 +136,10 @@ public final class Statistics {
         else {
             return s;
         }
+    }
+
+    private void init(Map<String, Stats> allInfos) {
+        this.map = allInfos;
     }
 
     @Override

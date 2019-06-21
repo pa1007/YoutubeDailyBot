@@ -8,8 +8,8 @@ import java.util.Map;
 
 public class MYSQLConnection {
 
-    public Connection connection;
-    public boolean    connected;
+    private Connection connection;
+    private boolean    connected;
 
 
     public MYSQLConnection() {
@@ -63,7 +63,23 @@ public class MYSQLConnection {
         }
     }
 
-    public boolean isInBase(Stats s) throws SQLException, ClassNotFoundException {
+    /**
+     * to get a new Connection
+     *
+     * @throws SQLException           if the program is unable to connect to the database
+     * @throws ClassNotFoundException if the jdbc driver is not present
+     */
+    private void getConnection() throws SQLException, ClassNotFoundException {
+        DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+        Class.forName("com.mysql.jdbc.Driver");
+        if (!connected || !connection.isValid(1)) {
+            connection = DriverManager.getConnection(Constants.URL, Constants.USER_NAME, Constants.USER_PASSWORD);
+            connected = true;
+        }
+
+    }
+
+    private boolean isInBase(Stats s) throws SQLException, ClassNotFoundException {
         testIfConnectionOpened();
         PreparedStatement p = connection.prepareStatement(Constants.EXIST_STATS);
         p.setString(1, s.getChanID());
@@ -73,34 +89,11 @@ public class MYSQLConnection {
         return rs.getBoolean(1);
     }
 
-    /**
-     * to get a new Connection
-     *
-     * @return Connection
-     * @throws SQLException           if the program is unable to connect to the database
-     * @throws ClassNotFoundException if the jdbc driver is not present
-     */
-    public Connection getConnection() throws SQLException, ClassNotFoundException {
-        DriverManager.registerDriver(new com.mysql.jdbc.Driver());
-        Class.forName("com.mysql.jdbc.Driver");
-        if (connected && connection.isValid(1)) {
-
-            return connection;
-        }
-        else {
-            connection = DriverManager.getConnection(Constants.URL, Constants.USER_NAME, Constants.USER_PASSWORD);
-            connected = true;
-            return connection;
-        }
-
-    }
-
-
-    public void addName(Stats s) throws SQLException, ClassNotFoundException {
+    private void addName(Stats s) throws SQLException, ClassNotFoundException {
         addName(s.getChanID(), s.getChanName());
     }
 
-    public void addName(String chanID, String chanName) throws SQLException, ClassNotFoundException {
+    private void addName(String chanID, String chanName) throws SQLException, ClassNotFoundException {
         testIfConnectionOpened();
         if (!nameInBase(chanID, chanName)) {
             PreparedStatement p = connection.prepareStatement(Constants.ADD_NAME);
@@ -111,7 +104,7 @@ public class MYSQLConnection {
         }
     }
 
-    public boolean nameInBase(String chanID, String chanName) throws SQLException, ClassNotFoundException {
+    private boolean nameInBase(String chanID, String chanName) throws SQLException, ClassNotFoundException {
         testIfConnectionOpened();
         PreparedStatement p = connection.prepareStatement(Constants.TEST_NAME);
         p.setString(1, chanID);
@@ -122,7 +115,7 @@ public class MYSQLConnection {
     }
 
 
-    public void sumStats(Stats s) throws SQLException, ClassNotFoundException {
+    private void sumStats(Stats s) throws SQLException, ClassNotFoundException {
         testIfConnectionOpened();
         PreparedStatement p = connection.prepareStatement(Constants.UPDATE_STATS);
         p.setLong(1, s.getCumulatedViews());
@@ -136,7 +129,7 @@ public class MYSQLConnection {
         p.close();
     }
 
-    public void testIfConnectionOpened() throws SQLException, ClassNotFoundException {
+    private void testIfConnectionOpened() throws SQLException, ClassNotFoundException {
         if (!connected) {
             getConnection();
         }

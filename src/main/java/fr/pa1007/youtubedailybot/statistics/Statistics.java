@@ -24,7 +24,8 @@ public final class Statistics {
     public void addNew(Video f) throws SQLException, ClassNotFoundException {
         Stats s = test(f.getChanID());
         if (s == null) {
-            map.put(f.getChanID(), new Stats(f));
+            s = new Stats(f);
+            map.put(f.getChanID(), s);
         }
         else {
             s.add(f);

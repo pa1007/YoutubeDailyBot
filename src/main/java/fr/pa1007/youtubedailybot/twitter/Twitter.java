@@ -5,6 +5,7 @@ import fr.pa1007.youtubedailybot.statistics.Stats;
 import fr.pa1007.youtubedailybot.statistics.VideoException;
 import fr.pa1007.youtubedailybot.youtube.Video;
 import twitter4j.Status;
+import twitter4j.StatusUpdate;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import java.io.BufferedReader;
@@ -29,9 +30,10 @@ public class Twitter {
     }
 
     public static void sendTweet(String line) throws TwitterException {
+        StatusUpdate      s       = new StatusUpdate(line);
         twitter4j.Twitter twitter = TwitterFactory.getSingleton();
         Status            status;
-        status = twitter.updateStatus(line);
+        status = twitter.updateStatus(s);
         System.out.println(status);
 
     }

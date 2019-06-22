@@ -130,8 +130,6 @@ public class MYSQLConnection {
     }
 
     private void testIfConnectionOpened() throws SQLException, ClassNotFoundException {
-        if (!connected) {
-            getConnection();
-        }
+        getConnection();
     }
 }

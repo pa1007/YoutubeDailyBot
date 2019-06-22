@@ -2,6 +2,7 @@
 ### Java template
 # Compiled class file
 *.class
+/.idea/*
 
 # Log file
 *.log
@@ -44,3 +45,6 @@ src/main/resources/key.txt
 # gradle/wrapper/gradle-wrapper.properties
 
 
+key.txt
+out/production/
+src/test/

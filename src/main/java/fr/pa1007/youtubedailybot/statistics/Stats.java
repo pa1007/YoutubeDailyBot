@@ -9,9 +9,9 @@ public class Stats {
 
     private String chanID;
 
-    private long cumulatedViews;
-
     private long number;
+
+    private long cumulatedViews;
 
     private long cumulatedLikes;
 
@@ -98,9 +98,11 @@ public class Stats {
         return Objects.toStringHelper(this)
                 .add("chanName", chanName)
                 .add("chanID", chanID)
-                .add("cumulatedViews", cumulatedViews)
                 .add("number", number)
+                .add("cumulatedViews", cumulatedViews)
                 .add("cumulatedLikes", cumulatedLikes)
+                .add("cumulatedDisLikes", cumulatedDisLikes)
+                .add("cumulatedComm", cumulatedComm)
                 .toString();
     }
 }

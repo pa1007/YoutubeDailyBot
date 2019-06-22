@@ -36,7 +36,7 @@ So for this video :
 ![Exemple](https://puu.sh/DJisV/55af24345f.png)
 
 ~~~~
-Tipping Waitresses With Real Gold Bars from Mr.Beast 
+Tipping Waitresses With Real Gold Bars from MrBeast 
 Has 7.6M views and 425.81K likes 
 https://www.youtube.com/watch?v=Rmf6T_Ewt38
 ~~~~
@@ -81,7 +81,7 @@ Average Views
 Average Likes
 {AVERAGE_LIKES} 
 ~~~~
-(More to come, added in a need future)
+(More to come, added in a near future)
 
 So for this video  **(Assuming this is the only video register for him of the month and is the first of the month )** ;
 

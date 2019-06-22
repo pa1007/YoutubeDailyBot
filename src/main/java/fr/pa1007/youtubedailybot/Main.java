@@ -6,7 +6,6 @@ import fr.pa1007.youtubedailybot.statistics.Statistics;
 import fr.pa1007.youtubedailybot.twitter.Twitter;
 import fr.pa1007.youtubedailybot.youtube.Finder;
 import fr.pa1007.youtubedailybot.youtube.Video;
-import java.sql.SQLException;
 import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
@@ -15,16 +14,44 @@ import java.util.Scanner;
 public class Main {
 
 
+    private static long getTimeRemaining() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DATE) + 1,
+                12,
+                0,
+                0
+        );
+        Date tomorrow = calendar.getTime();
+        System.out.println(tomorrow);
+        return tomorrow.getTime();
+    }
+
     public static void main(String[] args) {
+        System.out.println(getTimeRemaining() - Date.from(Instant.now()).getTime());
         boolean    canDo = false;
         Statistics s     = null;
         try {
             s = new Statistics();
         }
-        catch (SQLException | ClassNotFoundException e) {
+        catch (Exception e) {
             Mail.send(e);
             canDo = true;
         }
+        long time = getTimeRemaining();
+        try {
+            Thread.sleep(time);
+        }
+        catch (InterruptedException e) {
+            boolean b = Mail.send(e);
+            if (b) {
+                Thread.currentThread().interrupt();
+            }
+            canDo = true;
+        }
+
         while (true) {
             if (!canDo) {
                 try {
@@ -49,7 +76,7 @@ public class Main {
 
                     }
 
-                    Thread.sleep((long) 8.64e+7);
+                    Thread.sleep(getTimeRemaining());
                 }
                 catch (InterruptedException e) {
                     boolean b = Mail.send(e);

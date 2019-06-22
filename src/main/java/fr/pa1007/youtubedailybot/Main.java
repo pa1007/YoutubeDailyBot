@@ -26,11 +26,11 @@ public class Main {
         );
         Date tomorrow = calendar.getTime();
         System.out.println(tomorrow);
-        return tomorrow.getTime();
+        return tomorrow.getTime() - Date.from(Instant.now()).getTime();
     }
 
     public static void main(String[] args) {
-        System.out.println(getTimeRemaining() - Date.from(Instant.now()).getTime());
+        System.out.println(getTimeRemaining());
         boolean    canDo = false;
         Statistics s     = null;
         try {
@@ -41,6 +41,7 @@ public class Main {
             canDo = true;
         }
         long time = getTimeRemaining();
+        System.out.println("About to wait " + time + " near " + Date.from(Instant.ofEpochMilli(time)));
         try {
             Thread.sleep(time);
         }

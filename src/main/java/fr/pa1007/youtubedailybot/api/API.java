@@ -17,10 +17,24 @@ public class API {
 
     static final Gson GSON = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
 
+    /**
+     * This method will return a youtube link with the good time to get and key
+     * from Instant.now()
+     *
+     * @return the URL
+     * @throws MalformedURLException if the URL is malformed
+     * @throws KeyException          if the key is unreadable
+     */
     public static URL getUrl() throws MalformedURLException, KeyException {
         return getUrl(Date.from(Instant.now()));
     }
 
+    /**
+     * Get the key (key.txt)
+     *
+     * @return the key
+     * @throws KeyException if the key is unreadable
+     */
     public static String getKey() throws KeyException {
         String key;
         try (BufferedReader br = new BufferedReader(new FileReader("key.txt"))) {
@@ -41,6 +55,14 @@ public class API {
         }
     }
 
+    /**
+     * Get the result from the API, see youtube api for the result
+     *
+     * @param d the date before
+     * @return the Result
+     * @throws IOException  if The connection is impossible
+     * @throws KeyException if the key is unreadable
+     */
     public static Result getResult(Date d) throws IOException, KeyException {
         URL  url           = getUrl(d);
         Type clazzListType = new TypeToken<Result>() {}.getType();
@@ -49,6 +71,14 @@ public class API {
         }
     }
 
+    /**
+     * This method will return a youtube link with the good time to get and key
+     *
+     * @param date The date of the start
+     * @return The url changed
+     * @throws MalformedURLException if the url is malformed
+     * @throws KeyException          if the key is unreadable
+     */
     public static URL getUrl(Date date) throws MalformedURLException, KeyException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-d");
         String url =

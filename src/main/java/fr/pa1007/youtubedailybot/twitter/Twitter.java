@@ -15,9 +15,20 @@ import java.security.KeyException;
 
 public class Twitter {
 
+    /**
+     * Remove constructor for statics method only
+     */
     private Twitter() {
     }
 
+    /**
+     * Create the tweet for a video
+     *
+     * @param video the video about
+     * @return a tweet from the tweet.txt file
+     * @throws KeyException if the kay is not readable
+     * @throws IOException  if the connection as an error
+     */
     public static String makeTweet(Video video) throws IOException, KeyException {
         String         line;
         StringBuilder  result = new StringBuilder();
@@ -29,6 +40,12 @@ public class Twitter {
         return result.toString();
     }
 
+    /**
+     * Send the tweet to tweeter
+     *
+     * @param line the tweet you want tho send
+     * @throws TwitterException if the twitter API send an error
+     */
     public static void sendTweet(String line) throws TwitterException {
         StatusUpdate      s       = new StatusUpdate(line);
         twitter4j.Twitter twitter = TwitterFactory.getSingleton();
@@ -38,6 +55,14 @@ public class Twitter {
 
     }
 
+    /**
+     * Create the tweet for a Statistics
+     *
+     * @param statistics the statistics to find
+     * @return The tweet formed from stat.txt
+     * @throws IOException    if the stat.txt is unreadable
+     * @throws VideoException if the program is unable to find a video
+     */
     public static String createStatTwit(Statistics statistics) throws IOException, VideoException {
         StringBuilder  result = new StringBuilder();
         BufferedReader br     = new BufferedReader(new FileReader("stat.txt"));
@@ -51,6 +76,15 @@ public class Twitter {
         return result.toString();
     }
 
+    /**
+     * to understand markup (See readme.md)
+     *
+     * @param line  the line
+     * @param video the video
+     * @return an info
+     * @throws KeyException if the key is unreadable
+     * @throws IOException  if something is wrong
+     */
     private static String interpretLine(String line, Video video) throws KeyException, IOException {
         if (line.startsWith("{")) {
             String result;
@@ -83,6 +117,13 @@ public class Twitter {
         return line + " ";
     }
 
+    /**
+     * to understand markup (See readme.md)
+     *
+     * @param line the line
+     * @param s    the statistics
+     * @return an info
+     */
     private static String interpretLineStat(String line, Stats s) {
         if (line.startsWith("{")) {
             String result;

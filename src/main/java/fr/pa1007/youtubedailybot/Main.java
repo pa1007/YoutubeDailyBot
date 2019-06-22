@@ -17,6 +17,13 @@ import java.util.Scanner;
 public class Main {
 
 
+    /**
+     * Get the time remaining between NOW and Tomorrow
+     *
+     * @return time in millisecond
+     * @throws IOException    if the API doesn't work
+     * @throws ParseException if the API doesn't work
+     */
     private static long getTimeRemaining() throws IOException, ParseException {
         Calendar calendar = Calendar.getInstance();
         calendar.set(
@@ -34,6 +41,11 @@ public class Main {
         return tomorrow.getTime() - today.getTime();
     }
 
+    /**
+     * Main method, need refactor
+     *
+     * @param args the args
+     */
     public static void main(String[] args) {
         boolean    canDo = false;
         Statistics s     = null;

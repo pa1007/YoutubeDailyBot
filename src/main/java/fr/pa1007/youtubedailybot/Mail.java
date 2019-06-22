@@ -10,16 +10,32 @@ import java.util.List;
 
 public class Mail {
 
-    private static List<String> mailToSend = new ArrayList<>();
+    /**
+     * The tweeter account name you want to send the message
+     */
+    private static final String       ACCOUNT    = ""; // TODO ACCOUNT
+    /**
+     * List of mail who hasn't been send
+     */
+    private static       List<String> mailToSend = new ArrayList<>();
 
+    private Mail() {
 
+    }
+
+    /**
+     * Send the message associated to this Exception, if the message is send, it will check for the potentials one in the list
+     *
+     * @param e the exception
+     * @return true if send, false if not
+     */
     public static boolean send(Exception e) {
         String s = createString(e);
         try {
             twitter4j.Twitter twitter = TwitterFactory.getSingleton();
-            twitter.sendDirectMessage("Yoloteist", s);
+            twitter.sendDirectMessage(ACCOUNT, s);
             for (Iterator<String> iterator = mailToSend.iterator(); iterator.hasNext(); ) {
-                twitter.directMessages().sendDirectMessage("Yoloteist", iterator.next());
+                twitter.directMessages().sendDirectMessage(ACCOUNT, iterator.next());
                 iterator.remove();
             }
         }
@@ -31,14 +47,15 @@ public class Mail {
 
     }
 
+    /**
+     * To create the message from the exception
+     *
+     * @param e the exception
+     * @return The message
+     */
     public static String createString(Exception e) {
-        StringBuilder r = new StringBuilder(Date.from(Instant.now()) + " ;"
-                                            +
-                                            "Dear pa1007, My creator, i'm here because of the Application Daily Youtube video, something went wrong and you will have the exception; \n"
-                                            + "Please remind that if the exception is an InterruptedException you will need to restart it manually, it might be important to look after each exception \n"
-                                            + "I think you can find the error my friend, please do something quick ! \n\n\n"
-                                            + ""
-                                            + "Best regard pa1007\n\n\n");
+        StringBuilder r = new StringBuilder(Date.from(Instant.now()) + " ;");
+        //ADD A MESSAGE
         r.append(e.getLocalizedMessage()).append("\n");
         r.append(e.getClass()).append("\n");
         for (StackTraceElement st : e.getStackTrace()) {

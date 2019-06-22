@@ -21,87 +21,37 @@ public final class Statistics {
         init(mysqlConnection.getAllInfos());
     }
 
-    public void addNew(Video f) throws SQLException, ClassNotFoundException {
-        Stats s = test(f.getChanID());
+    /**
+     * Add new video.
+     *
+     * @param video the video
+     * @throws SQLException           the sql exception
+     * @throws ClassNotFoundException the class not found exception
+     */
+    public void addNew(Video video) throws SQLException, ClassNotFoundException {
+        Stats s = test(video.getChanID());
         if (s == null) {
-            s = new Stats(f);
-            map.put(f.getChanID(), s);
+            s = new Stats(video);
+            map.put(video.getChanID(), s);
         }
         else {
-            s.add(f);
+            s.add(video);
         }
         mysqlConnection.addStat(s);
     }
 
-
-    public Stats test(String id) {
-        for (Map.Entry<String, Stats> s : map.entrySet()) {
-            if (s.getKey().equals(id)) {
-                return s.getValue();
-            }
-        }
-        return null;
-    }
-
+    /**
+     * Gets map.
+     *
+     * @return the map
+     */
     public Map<String, Stats> getMap() {
         return map;
     }
 
-    public Stats getFirstThisMonthViews() {
-        long  max  = Long.MIN_VALUE;
-        Stats keep = null;
-        for (Stats s : map.values()) {
-            if (s.getCumulatedViews() > max) {
-                keep = s;
-            }
-        }
-        return keep;
-    }
-
-    public Stats getFirstThisMonthAVGView() {
-        long  max  = Long.MIN_VALUE;
-        Stats keep = null;
-        for (Stats s : map.values()) {
-            if (s.getAvgViews() > max) {
-                keep = s;
-            }
-        }
-        return keep;
-    }
-
-    public Stats getFirstThisMonthAVGLikes() {
-        long  max  = Long.MIN_VALUE;
-        Stats keep = null;
-        for (Stats s : map.values()) {
-            if (s.getAvgLikes() > max) {
-                keep = s;
-            }
-        }
-        return keep;
-    }
-
-    public Stats getFirstThisMonthLikes() {
-        long  max  = Long.MIN_VALUE;
-        Stats keep = null;
-        for (Stats s : map.values()) {
-            if (s.getCumulatedLikes() > max) {
-                keep = s;
-            }
-        }
-        return keep;
-    }
-
-    public Stats getFirstThisMonthNumber() {
-        long  max  = 0;
-        Stats keep = null;
-        for (Stats s : map.values()) {
-            if (s.getNumber() > max) {
-                keep = s;
-            }
-        }
-        return keep;
-    }
-
+    /**
+     * Reset month.
+     */
     public void resetMonth() {
         String[] monthName = DateFormatSymbols.getInstance().getMonths();
         Calendar cal       = Calendar.getInstance();
@@ -111,6 +61,13 @@ public final class Statistics {
         map.clear();
     }
 
+    /**
+     * Gets first this month.
+     *
+     * @param readLine the read line
+     * @return the first this month
+     * @throws VideoException the video exception
+     */
     public Stats getFirstThisMonth(String readLine) throws VideoException {
         Stats s;
         switch (readLine) {
@@ -137,6 +94,95 @@ public final class Statistics {
         else {
             return s;
         }
+    }
+
+    /**
+     * Gets first this month views.
+     *
+     * @return the first this month views
+     */
+    private Stats getFirstThisMonthViews() {
+        long  max  = Long.MIN_VALUE;
+        Stats keep = null;
+        for (Stats s : map.values()) {
+            if (s.getCumulatedViews() > max) {
+                keep = s;
+            }
+        }
+        return keep;
+    }
+
+    /**
+     * Gets first this month average view.
+     *
+     * @return the first this month average view
+     */
+    private Stats getFirstThisMonthAVGView() {
+        long  max  = Long.MIN_VALUE;
+        Stats keep = null;
+        for (Stats s : map.values()) {
+            if (s.getAvgViews() > max) {
+                keep = s;
+            }
+        }
+        return keep;
+    }
+
+    /**
+     * Gets first this month average likes.
+     *
+     * @return the first this month average likes
+     */
+    private Stats getFirstThisMonthAVGLikes() {
+        long  max  = Long.MIN_VALUE;
+        Stats keep = null;
+        for (Stats s : map.values()) {
+            if (s.getAvgLikes() > max) {
+                keep = s;
+            }
+        }
+        return keep;
+    }
+
+    /**
+     * Gets first this month likes.
+     *
+     * @return the first this month likes
+     */
+    private Stats getFirstThisMonthLikes() {
+        long  max  = Long.MIN_VALUE;
+        Stats keep = null;
+        for (Stats s : map.values()) {
+            if (s.getCumulatedLikes() > max) {
+                keep = s;
+            }
+        }
+        return keep;
+    }
+
+    /**
+     * Gets first this month number.
+     *
+     * @return the first this month number
+     */
+    private Stats getFirstThisMonthNumber() {
+        long  max  = 0;
+        Stats keep = null;
+        for (Stats s : map.values()) {
+            if (s.getNumber() > max) {
+                keep = s;
+            }
+        }
+        return keep;
+    }
+
+    private Stats test(String id) {
+        for (Map.Entry<String, Stats> s : map.entrySet()) {
+            if (s.getKey().equals(id)) {
+                return s.getValue();
+            }
+        }
+        return null;
     }
 
     private void init(Map<String, Stats> allInfos) {

@@ -14,6 +14,13 @@ public class Time {
 
     }
 
+    /**
+     * This method will contact an API for getting the time in paris France
+     *
+     * @return the current date or null if API not working
+     * @throws IOException    if the API isn't working
+     * @throws ParseException if the Api String is bad
+     */
     public static Date getTime() throws IOException, ParseException {
         BufferedReader br = new BufferedReader(new InputStreamReader(new URL(
                 "http://worldtimeapi.org/api/timezone/Europe/Paris.txt").openStream()));

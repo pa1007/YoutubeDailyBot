@@ -25,7 +25,7 @@ public class Stats {
         chanID = f.getChanID();
         number = 1;
         cumulatedViews = f.getTrueViews();
-        cumulatedLikes = f.getTruelikes();
+        cumulatedLikes = f.getTrueLikes();
         cumulatedComm = f.getTrueComm();
         cumulatedDisLikes = f.getTrueDislikes();
 
@@ -52,7 +52,7 @@ public class Stats {
     public void add(Video f) {
         number++;
         cumulatedViews += f.getTrueViews();
-        cumulatedLikes += f.getTruelikes();
+        cumulatedLikes += f.getTrueLikes();
         cumulatedComm += f.getTrueComm();
         cumulatedDisLikes += f.getTrueDislikes();
     }

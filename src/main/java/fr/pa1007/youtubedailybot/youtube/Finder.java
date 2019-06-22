@@ -5,10 +5,20 @@ import fr.pa1007.youtubedailybot.api.Result;
 
 public class Finder {
 
+    /**
+     * Only static method
+     */
     private Finder() {
 
     }
 
+    /**
+     * To get the first video from the result
+     *
+     * @param result the result found
+     * @return A video
+     * @see Video
+     */
     public static Video getVideo(Result result) {
         Item   item   = result.getItems().get(0);
         String chanID = item.getSnippet().getChannelId();

@@ -6,6 +6,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The type Mysql connection.
+ */
 public class MYSQLConnection {
 
     private Connection connection;
@@ -42,24 +45,31 @@ public class MYSQLConnection {
         return infos;
     }
 
-    public void addStat(Stats s) throws SQLException, ClassNotFoundException {
+    /**
+     * Add stat to the Database.
+     *
+     * @param stats the stats
+     * @throws SQLException           if the program is unable to connect to the database
+     * @throws ClassNotFoundException if the jdbc driver is not present
+     */
+    public void addStat(Stats stats) throws SQLException, ClassNotFoundException {
         testIfConnectionOpened();
-        if (!isInBase(s)) {
+        if (!isInBase(stats)) {
             PreparedStatement p = connection.prepareStatement(Constants.START_STATS);
-            p.setString(1, s.getChanID());
-            p.setLong(2, s.getCumulatedViews());
-            p.setLong(3, s.getCumulatedLikes());
-            p.setLong(4, s.getCumulatedComms());
-            p.setLong(5, s.getCumulatedDisLikes());
+            p.setString(1, stats.getChanID());
+            p.setLong(2, stats.getCumulatedViews());
+            p.setLong(3, stats.getCumulatedLikes());
+            p.setLong(4, stats.getCumulatedComms());
+            p.setLong(5, stats.getCumulatedDisLikes());
             p.setInt(6, Calendar.getInstance().get(Calendar.MONTH) + 1);
             p.execute();
-            if (!nameInBase(s.getChanID(), s.getChanName())) {
-                addName(s);
+            if (!nameInBase(stats.getChanID(), stats.getChanName())) {
+                addName(stats);
             }
             p.close();
         }
         else {
-            sumStats(s);
+            sumStats(stats);
         }
     }
 
@@ -79,20 +89,42 @@ public class MYSQLConnection {
 
     }
 
-    private boolean isInBase(Stats s) throws SQLException, ClassNotFoundException {
+    /**
+     * @param stats the stats to check
+     * @return true if in base or false if not
+     * @throws SQLException           if the program is unable to connect to the database
+     * @throws ClassNotFoundException if the jdbc driver is not present
+     */
+    private boolean isInBase(Stats stats) throws SQLException, ClassNotFoundException {
         testIfConnectionOpened();
         PreparedStatement p = connection.prepareStatement(Constants.EXIST_STATS);
-        p.setString(1, s.getChanID());
+        p.setString(1, stats.getChanID());
         p.setInt(2, Calendar.getInstance().get(Calendar.MONTH) + 1);
         ResultSet rs = p.executeQuery();
         rs.first();
         return rs.getBoolean(1);
     }
 
-    private void addName(Stats s) throws SQLException, ClassNotFoundException {
-        addName(s.getChanID(), s.getChanName());
+    /**
+     * To add a stats
+     *
+     * @param stats to add
+     * @throws SQLException           if the program is unable to connect to the database
+     * @throws ClassNotFoundException if the jdbc driver is not present
+     * @see #addName(String, String)
+     */
+    private void addName(Stats stats) throws SQLException, ClassNotFoundException {
+        addName(stats.getChanID(), stats.getChanName());
     }
 
+    /**
+     * To add a channel and is name
+     *
+     * @param chanID   the id of the channel
+     * @param chanName the name of the channel
+     * @throws SQLException           if the program is unable to connect to the database
+     * @throws ClassNotFoundException if the jdbc driver is not present
+     */
     private void addName(String chanID, String chanName) throws SQLException, ClassNotFoundException {
         testIfConnectionOpened();
         if (!nameInBase(chanID, chanName)) {
@@ -104,6 +136,15 @@ public class MYSQLConnection {
         }
     }
 
+    /**
+     * to see if there ar in the database
+     *
+     * @param chanID   the id of the channel
+     * @param chanName the name of the channel
+     * @return
+     * @throws SQLException           if the program is unable to connect to the database
+     * @throws ClassNotFoundException if the jdbc driver is not present
+     */
     private boolean nameInBase(String chanID, String chanName) throws SQLException, ClassNotFoundException {
         testIfConnectionOpened();
         PreparedStatement p = connection.prepareStatement(Constants.TEST_NAME);
@@ -115,15 +156,22 @@ public class MYSQLConnection {
     }
 
 
-    private void sumStats(Stats s) throws SQLException, ClassNotFoundException {
+    /**
+     * Update the Database with the new value
+     *
+     * @param stats the stats to update
+     * @throws SQLException           if the program is unable to connect to the database
+     * @throws ClassNotFoundException if the driver is not here
+     */
+    private void sumStats(Stats stats) throws SQLException, ClassNotFoundException {
         testIfConnectionOpened();
         PreparedStatement p = connection.prepareStatement(Constants.UPDATE_STATS);
-        p.setLong(1, s.getCumulatedViews());
-        p.setLong(2, s.getCumulatedViews());
-        p.setLong(3, s.getCumulatedDisLikes());
-        p.setLong(4, s.getCumulatedComms());
-        p.setLong(5, s.getNumber());
-        p.setString(6, s.getChanID());
+        p.setLong(1, stats.getCumulatedViews());
+        p.setLong(2, stats.getCumulatedViews());
+        p.setLong(3, stats.getCumulatedDisLikes());
+        p.setLong(4, stats.getCumulatedComms());
+        p.setLong(5, stats.getNumber());
+        p.setString(6, stats.getChanID());
         p.setInt(7, Calendar.getInstance().get(Calendar.MONTH) + 1);
         p.execute();
         p.close();

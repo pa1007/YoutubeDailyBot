@@ -167,7 +167,7 @@ public class MYSQLConnection {
         testIfConnectionOpened();
         PreparedStatement p = connection.prepareStatement(Constants.UPDATE_STATS);
         p.setLong(1, stats.getCumulatedViews());
-        p.setLong(2, stats.getCumulatedViews());
+        p.setLong(2, stats.getCumulatedLikes());
         p.setLong(3, stats.getCumulatedDisLikes());
         p.setLong(4, stats.getCumulatedComms());
         p.setLong(5, stats.getNumber());

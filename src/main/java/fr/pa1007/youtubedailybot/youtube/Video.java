@@ -209,7 +209,9 @@ public class Video {
         like = prettyNumber(Math.toIntExact(likes));
         dislikes = Long.parseLong(vid.getDislikeCount());
         dislike = prettyNumber(Math.toIntExact(dislikes));
-        comms = Long.parseLong(vid.getCommentCount());
+        if (vid.getCommentCount() != null) {
+            comms = Long.parseLong(vid.getCommentCount());
+        }
         comm = prettyNumber(Math.toIntExact(comms));
     }
 

@@ -47,6 +47,9 @@ public class Twitter {
      * @throws TwitterException if the twitter API send an error
      */
     public static void sendTweet(String line) throws TwitterException {
+        if (line.contains("&#39;")) {
+            line = line.replace("&#39;", "'");
+        }
         StatusUpdate      s       = new StatusUpdate(line);
         twitter4j.Twitter twitter = TwitterFactory.getSingleton();
         Status            status;

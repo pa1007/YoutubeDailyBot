@@ -25,18 +25,25 @@ public class Main {
      * @throws ParseException if the API doesn't work
      */
     private static long getTimeRemaining() throws IOException, ParseException {
+        Date     today         = Time.getTime();
+        Calendar calendartoday = Calendar.getInstance();
+        calendartoday.setTime(today);
         Calendar calendar = Calendar.getInstance();
+        int      day      = calendar.get(Calendar.DATE);
+        if (calendartoday.get(Calendar.HOUR_OF_DAY) >= 12) {
+            day++;
+        }
         calendar.set(
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DATE) + 1,
+                day,
                 12,
                 0,
                 0
         );
         Date tomorrow = calendar.getTime();
         System.out.println(tomorrow);
-        Date today = Time.getTime();
+
         System.err.println(today);
         return tomorrow.getTime() - today.getTime();
     }

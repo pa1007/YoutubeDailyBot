@@ -17,6 +17,8 @@ import java.util.Scanner;
 public class Main {
 
 
+    private static int lastDay;
+
     /**
      * Get the time remaining between NOW and Tomorrow
      *
@@ -33,6 +35,10 @@ public class Main {
         if (calendartoday.get(Calendar.HOUR_OF_DAY) >= 12) {
             day++;
         }
+        if (lastDay == day) {
+            day++;
+        }
+        lastDay = day;
         calendar.set(
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
@@ -65,17 +71,7 @@ public class Main {
             Mail.send(e);
             canDo = true;
         }
-        System.out.println("About to wait " + time + " near " + Date.from(Instant.ofEpochMilli(time)));
-        try {
-            Thread.sleep(time);
-        }
-        catch (InterruptedException e) {
-            boolean b = Mail.send(e);
-            if (b) {
-                Thread.currentThread().interrupt();
-            }
-            canDo = true;
-        }
+        canDo = sleep(canDo, time);
 
         while (true) {
             if (!canDo) {
@@ -126,9 +122,33 @@ public class Main {
                 }
                 else {
                     canDo = false;
+                    try {
+
+                        time = getTimeRemaining();
+                    }
+                    catch (Exception e) {
+                        Mail.send(e);
+                        canDo = true;
+                    }
+                    canDo = sleep(canDo, time);
                 }
             }
         }
+    }
+
+    private static boolean sleep(boolean canDo, long time) {
+        System.out.println("About to wait " + time + " near " + Date.from(Instant.ofEpochMilli(time)));
+        try {
+            Thread.sleep(time);
+        }
+        catch (InterruptedException e) {
+            boolean b = Mail.send(e);
+            if (b) {
+                Thread.currentThread().interrupt();
+            }
+            canDo = true;
+        }
+        return canDo;
     }
 
 

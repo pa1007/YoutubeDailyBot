@@ -31,7 +31,8 @@ public class Main {
         Calendar calendartoday = Calendar.getInstance();
         calendartoday.setTime(today);
         Calendar calendar = Calendar.getInstance();
-        int      day      = calendar.get(Calendar.DATE);
+        calendar.setTime(today);
+        int day = calendar.get(Calendar.DATE);
         if (calendartoday.get(Calendar.HOUR_OF_DAY) >= 12) {
             day++;
         }

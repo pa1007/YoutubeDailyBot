@@ -203,11 +203,11 @@ public class Video {
             videoAPI = GSON.fromJson(data, clazzListType);
         }
         Statistics vid = videoAPI.getItems().get(0).getStatistics();
-        views = Long.parseLong(vid.getViewCount());
+        views = Long.parseLong(vid.getViewCount() != null ? vid.getViewCount() : "0");
         viewNb = prettyNumber(Math.toIntExact(views));
-        likes = Long.parseLong(vid.getLikeCount());
+        likes = Long.parseLong(vid.getLikeCount() != null ? vid.getLikeCount() : "0");
         like = prettyNumber(Math.toIntExact(likes));
-        dislikes = Long.parseLong(vid.getDislikeCount());
+        dislikes = Long.parseLong(vid.getDislikeCount() != null ? vid.getDislikeCount() : "0");
         dislike = prettyNumber(Math.toIntExact(dislikes));
         if (vid.getCommentCount() != null) {
             comms = Long.parseLong(vid.getCommentCount());

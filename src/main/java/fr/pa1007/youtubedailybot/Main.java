@@ -7,12 +7,12 @@ import fr.pa1007.youtubedailybot.statistics.Statistics;
 import fr.pa1007.youtubedailybot.twitter.Twitter;
 import fr.pa1007.youtubedailybot.youtube.Finder;
 import fr.pa1007.youtubedailybot.youtube.Video;
+import twitter4j.TwitterException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Scanner;
 
 public class Main {
 
@@ -61,95 +61,82 @@ public class Main {
      * @param args the args
      */
     public static void main(String[] args) {
-        boolean    canDo = false;
-        Statistics s     = null;
-        long       time  = (long) 8.64e+7;
+        Statistics s    = null;
+        long       time = (long) 8.64e+7;
         try {
             s = new Statistics();
             time = getTimeRemaining();
         }
         catch (Exception e) {
-            Mail.send(e);
-            canDo = true;
+            Mail.send(e, "ERROR");
         }
-        canDo = sleep(canDo, time);
+        sleep(time);
 
         while (true) {
-            if (!canDo) {
-                try {
-                    Calendar c = Calendar.getInstance();
-                    c.setTime(Date.from(Instant.now()));
-                    c.add(Calendar.DATE, -1);
-                    Result te = API.getResult(c.getTime());
-                    Video  f;
-                    try {
-                        f = Finder.getVideo(te);
-                        String twit = Twitter.makeTweet(f);
-                        System.out.println(twit);
-                        Twitter.sendTweet(twit);
-                        s.addNew(f);
-                    }
-                    catch (IndexOutOfBoundsException e) {
-                        Mail.send(new Exception("No video out"));
-                    }
-                    if (c.get(Calendar.DAY_OF_MONTH) == c.getActualMaximum(Calendar.DAY_OF_MONTH)) {
-                        String statTwit = Twitter.createStatTwit(s);
-                        Twitter.sendTweet(statTwit);
+            String twit = "ERROR";
+            Video  f    = null;
+            try {
+                Calendar c = Calendar.getInstance();
+                c.setTime(Date.from(Instant.now()));
+                c.add(Calendar.DATE, -1);
+                Result te = API.getResult(c.getTime());
 
-                    }
-                    time = getTimeRemaining();
-                    System.out.println("About to wait " + time + " near " + Date.from(Instant.ofEpochMilli(time)));
-                    Thread.sleep(time);
+                try {
+                    f = Finder.getVideo(te);
+                    s.addNew(f);
+                    twit = Twitter.makeTweet(f);
+                    System.out.println(twit);
+                    Twitter.sendTweet(twit);
                 }
-                catch (InterruptedException e) {
-                    boolean b = Mail.send(e);
-                    if (b) {
-                        Thread.currentThread().interrupt();
-                    }
-                    canDo = true;
+                catch (IndexOutOfBoundsException e) {
+                    Mail.send(new Exception("No video out"), twit);
                 }
-                catch (Exception e) {
-                    Mail.send(e);
-                    canDo = true;
+                if (c.get(Calendar.DAY_OF_MONTH) == c.getActualMaximum(Calendar.DAY_OF_MONTH)) {
+                    String statTwit = Twitter.createStatTwit(s);
+                    Twitter.sendTweet(statTwit);
+
+                }
+                time = getTimeRemaining();
+                System.out.println("About to wait " + time + " near " + Date.from(Instant.ofEpochMilli(time)));
+                Thread.sleep(time);
+            }
+            catch (InterruptedException e) {
+                boolean b = Mail.send(e, twit);
+                if (b) {
+                    Thread.currentThread().interrupt();
                 }
             }
-            else {
-                Scanner scanner = new Scanner(System.in);
-                System.err.println("Waiting input to resume : .....");
-                String string = scanner.nextLine();
-                if (string.equals("Stop")) {
-                    System.out.println(s);
-                    break;
+            catch (TwitterException e) {
+                if (f != null) {
+                    try {
+                        twit = Twitter.makeTweetWithoutTitle(f);
+                    }
+                    catch (Exception ex) {
+                        Mail.send(ex, twit);
+                    }
                 }
                 else {
-                    canDo = false;
-                    try {
-
-                        time = getTimeRemaining();
-                    }
-                    catch (Exception e) {
-                        Mail.send(e);
-                        canDo = true;
-                    }
-                    canDo = sleep(canDo, time);
+                    Mail.send(e, twit);
                 }
+            }
+            catch (Exception e) {
+                Mail.send(e, twit);
             }
         }
     }
 
-    private static boolean sleep(boolean canDo, long time) {
+
+    private static void sleep(long time) {
         System.out.println("About to wait " + time + " near " + Date.from(Instant.ofEpochMilli(time)));
         try {
             Thread.sleep(time);
         }
         catch (InterruptedException e) {
-            boolean b = Mail.send(e);
+            boolean b = Mail.send(e, "ERROR");
             if (b) {
                 Thread.currentThread().interrupt();
             }
-            canDo = true;
         }
-        return canDo;
     }
 
 

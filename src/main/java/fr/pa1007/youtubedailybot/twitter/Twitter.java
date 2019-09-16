@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.security.KeyException;
+import static fr.pa1007.youtubedailybot.twitter.StringMessage.VIDEO_NAME;
 
 public class Twitter {
 
@@ -69,13 +70,32 @@ public class Twitter {
     public static String createStatTwit(Statistics statistics) throws IOException, VideoException {
         StringBuilder  result = new StringBuilder();
         BufferedReader br     = new BufferedReader(new FileReader("stat.txt"));
-        String         line;
-        Stats          s      = statistics.getFirstThisMonth(br.readLine());
+        String         line   = br.readLine();
+        System.out.println(line);
+        System.out.println(statistics.getMap());
+        Stats s = statistics.getFirstThisMonth(line);
         while (br.ready()) {
             line = br.readLine();
             result.append(interpretLineStat(line, s));
         }
         statistics.resetMonth();
+        return result.toString();
+    }
+
+    public static String makeTweetWithoutTitle(Video video) throws IOException, KeyException {
+        String         line;
+        StringBuilder  result = new StringBuilder();
+        BufferedReader br     = new BufferedReader(new FileReader("tweet.txt"));
+        while (br.ready()) {
+            line = br.readLine();
+            if (StringMessage.getInstance(line) == VIDEO_NAME) {
+                result.append("(Title too long)");
+            }
+            else {
+
+                result.append(interpretLine(line, video));
+            }
+        }
         return result.toString();
     }
 

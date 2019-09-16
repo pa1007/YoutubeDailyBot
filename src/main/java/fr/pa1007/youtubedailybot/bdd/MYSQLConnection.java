@@ -22,7 +22,7 @@ public class MYSQLConnection {
         testIfConnectionOpened();
         Map<String, Stats> infos = new HashMap<>();
         PreparedStatement  p     = connection.prepareStatement(Constants.GET_ALL_STATS);
-        p.setInt(1, Calendar.getInstance().get(Calendar.MONTH) + 1);
+        p.setInt(1, Calendar.getInstance().get(Calendar.MONTH) );
         ResultSet rs = p.executeQuery();
         rs.beforeFirst();
         while (rs.next()) {

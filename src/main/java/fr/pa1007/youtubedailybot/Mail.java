@@ -26,11 +26,12 @@ public class Mail {
     /**
      * Send the message associated to this Exception, if the message is send, it will check for the potentials one in the list
      *
-     * @param e the exception
+     * @param e    the exception
+     * @param twit
      * @return true if send, false if not
      */
-    public static boolean send(Exception e) {
-        String s = createString(e);
+    public static boolean send(Exception e, String twit) {
+        String s = createString(e, twit);
         try {
             twitter4j.Twitter twitter = TwitterFactory.getSingleton();
             twitter.sendDirectMessage(ACCOUNT, s);
@@ -50,12 +51,14 @@ public class Mail {
     /**
      * To create the message from the exception
      *
-     * @param e the exception
+     * @param e    the exception
+     * @param twit le message a envoyer
      * @return The message
      */
-    public static String createString(Exception e) {
+    public static String createString(Exception e, String twit) {
         StringBuilder r = new StringBuilder(Date.from(Instant.now()) + " ;");
         //ADD A MESSAGE
+        r.append("tweet : ").append(twit).append("\n");
         r.append(e.getLocalizedMessage()).append("\n");
         r.append(e.getClass()).append("\n");
         for (StackTraceElement st : e.getStackTrace()) {

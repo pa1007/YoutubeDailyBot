@@ -29,6 +29,9 @@ public final class Statistics {
      * @throws ClassNotFoundException the class not found exception
      */
     public void addNew(Video video) throws SQLException, ClassNotFoundException {
+        if (video == null) {
+            throw new NullPointerException();
+        }
         Stats s = test(video.getChanID());
         if (s == null) {
             s = new Stats(video);

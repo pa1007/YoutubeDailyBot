@@ -88,11 +88,10 @@ public class Twitter {
         BufferedReader br     = new BufferedReader(new FileReader("tweet.txt"));
         while (br.ready()) {
             line = br.readLine();
-            if (StringMessage.getInstance(line) == VIDEO_NAME) {
+            if (line.startsWith("{") && StringMessage.getInstance(line) == VIDEO_NAME) {
                 result.append("(Title too long)");
             }
             else {
-
                 result.append(interpretLine(line, video));
             }
         }

@@ -17,6 +17,7 @@ public final class Statistics {
 
     public Statistics() throws SQLException, ClassNotFoundException {
         map = new HashMap<>();
+        monthMap = new HashMap<>();
         mysqlConnection = new MYSQLConnection();
         init(mysqlConnection.getAllInfos());
     }
@@ -59,7 +60,6 @@ public final class Statistics {
         String[] monthName = DateFormatSymbols.getInstance().getMonths();
         Calendar cal       = Calendar.getInstance();
         String   month     = monthName[cal.get(Calendar.MONTH)];
-
         monthMap.put(month, new HashMap<>(map));
         map.clear();
     }

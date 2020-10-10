@@ -4,20 +4,20 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import java.sql.Date;
 import java.time.Instant;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Set;
 
 public class Mail {
 
     /**
      * The tweeter account name you want to send the message
      */
-    private static final String       ACCOUNT    = ""; // TODO ACCOUNT
+    private static final String      ACCOUNT    = "Yoloteist"; // TODO ACCOUNT
     /**
      * List of mail who hasn't been send
      */
-    private static       List<String> mailToSend = new ArrayList<>();
+    private static       Set<String> mailToSend = new HashSet<>();
 
     private Mail() {
 

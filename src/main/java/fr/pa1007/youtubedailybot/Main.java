@@ -82,19 +82,34 @@ public class Main {
                 Result te = API.getResult(c.getTime());
 
                 try {
-                    f = Finder.getVideo(te);
-                    s.addNew(f);
-                    twit = Twitter.makeTweet(f);
-                    System.out.println(twit);
-                    Twitter.sendTweet(twit);
-                }
-                catch (IndexOutOfBoundsException e) {
-                    Mail.send(new Exception("No video out"), twit);
-                }
-                if (c.get(Calendar.DAY_OF_MONTH) == c.getActualMaximum(Calendar.DAY_OF_MONTH)) {
-                    String statTwit = Twitter.createStatTwit(s);
-                    Twitter.sendTweet(statTwit);
+                    try {
+                        f = Finder.getVideo(te);
+                        s.addNew(f);
+                        twit = Twitter.makeTweet(f);
+                        System.out.println(twit);
+                        Twitter.sendTweet(twit);
+                    }
+                    catch (IndexOutOfBoundsException e) {
+                        Mail.send(new Exception("No video out"), twit);
+                    }
+                    if (c.get(Calendar.DAY_OF_MONTH) == c.getActualMaximum(Calendar.DAY_OF_MONTH)) {
+                        String statTwit = Twitter.createStatTwit(s);
+                        Twitter.sendTweet(statTwit);
 
+                    }
+                }
+                catch (TwitterException e) {
+                    if (f != null) {
+                        try {
+                            twit = Twitter.makeTweetWithoutTitle(f);
+                        }
+                        catch (Exception ex) {
+                            Mail.send(ex, twit);
+                        }
+                    }
+                    else {
+                        Mail.send(e, twit);
+                    }
                 }
                 time = getTimeRemaining();
                 System.out.println("About to wait " + time + " near " + Date.from(Instant.ofEpochMilli(time)));
@@ -104,19 +119,6 @@ public class Main {
                 boolean b = Mail.send(e, twit);
                 if (b) {
                     Thread.currentThread().interrupt();
-                }
-            }
-            catch (TwitterException e) {
-                if (f != null) {
-                    try {
-                        twit = Twitter.makeTweetWithoutTitle(f);
-                    }
-                    catch (Exception ex) {
-                        Mail.send(ex, twit);
-                    }
-                }
-                else {
-                    Mail.send(e, twit);
                 }
             }
             catch (Exception e) {
